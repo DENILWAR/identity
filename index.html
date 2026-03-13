@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SON Identity — La nueva forma de conectar</title>
+  <meta name="description" content="SON Identity es la tarjeta de presentación metálica con NFC que transforma la manera en que los profesionales hacen networking." />
+
+  <!-- Favicon dinámico según tema del sistema -->
+  <!-- Dos <link> con media query: el navegador activa el correcto sin necesidad de JS -->
+  <link rel="icon" type="image/svg+xml" href="img/logoblack.svg" media="(prefers-color-scheme: light)" />
+  <link rel="icon" type="image/svg+xml" href="img/logowhite.svg"  media="(prefers-color-scheme: dark)"  />
+  <!-- Fallback para navegadores sin soporte de media en <link> favicon -->
+  <link id="favicon-fallback" rel="icon" type="image/svg+xml" href="img/logoblack.svg" />
+
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black:       #000000;
+      --black-rich:  #080808;
+      --black-soft:  #111111;
+      --black-card:  #161616;
+      --black-border:#1e1e1e;
+      --white:       #ffffff;
+      --white-dim:   #a8a8a8;
+      --white-ghost: #3a3a3a;
+
+      /* Metálicos */
+      --gold-light:  #e8d9b0;
+      --gold-mid:    #c9a84c;
+      --gold-dark:   #8a6a1e;
+      --silver-light:#d4d4d4;
+      --silver-mid:  #9e9e9e;
+
+      /* Gradientes metálicos */
+      --gradient-gold: linear-gradient(135deg, #e8d9b0 0%, #c9a84c 35%, #f5edd5 55%, #8a6a1e 80%, #c9a84c 100%);
+      --gradient-silver: linear-gradient(135deg, #c8c8c8 0%, #8a8a8a 30%, #f0f0f0 50%, #7a7a7a 75%, #b0b0b0 100%);
+      --gradient-card: linear-gradient(160deg, #1a1a1a 0%, #0d0d0d 50%, #1a1a1a 100%);
+
+      --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-text:    'SF Pro Text',    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+      --ease-smooth:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out:     cubic-bezier(0.0, 0.0, 0.2, 1);
+
+      --nav-h: 72px;
+      --section-pad: 140px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: var(--font-text);
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================================
+       TIPOGRAFÍA GLOBAL
+    ============================================================ */
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--silver-mid);
+    }
+
+    .headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 6vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--white);
+    }
+
+    .headline--xl {
+      font-size: clamp(3.2rem, 8vw, 7rem);
+    }
+
+    .subhead {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      font-weight: 300;
+      color: var(--white-dim);
+      line-height: 1.65;
+      max-width: 600px;
+    }
+
+    .metallic-text {
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .metallic-text--silver {
+      background: var(--gradient-silver);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ============================================================
+       SCROLL ANIMATION CLASSES
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.85s var(--ease-smooth),
+                  transform 0.85s var(--ease-smooth);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal--left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.9s var(--ease-smooth),
+                  transform 0.9s var(--ease-smooth);
+    }
+
+    .reveal--left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal--right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s var(--ease-smooth),
+                  transform 0.9s var(--ease-smooth);
+    }
+
+    .reveal--right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal--scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.95s var(--ease-smooth),
+                  transform 0.95s var(--ease-smooth);
+    }
+
+    .reveal--scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Staggered children */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s var(--ease-smooth),
+                  transform 0.7s var(--ease-smooth);
+    }
+
+    .stagger.visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s;    }
+    .stagger.visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.1s;  }
+    .stagger.visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.2s;  }
+    .stagger.visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.3s;  }
+    .stagger.visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.4s;  }
+    .stagger.visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.5s;  }
+
+    /* ============================================================
+       BARRA DE NAVEGACIÓN
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-h);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      transition: background 0.4s var(--ease-smooth),
+                  backdrop-filter 0.4s,
+                  border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+
+    #navbar.scrolled {
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-color: var(--black-border);
+    }
+
+    .nav-logo {
+      height: 28px;
+      width: auto;
+      opacity: 0.95;
+      transition: opacity 0.3s;
+    }
+
+    .nav-logo:hover {
+      opacity: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.01em;
+      transition: color 0.25s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold-light);
+      transition: width 0.3s var(--ease-smooth);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--black) !important;
+      background: var(--gradient-gold);
+      padding: 9px 22px;
+      border-radius: 40px;
+      letter-spacing: 0.02em;
+      transition: opacity 0.25s, transform 0.2s var(--ease-spring) !important;
+    }
+
+    .nav-cta::after {
+      display: none !important;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.9;
+      transform: scale(1.03) !important;
+    }
+
+    /* Hamburger mobile */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: calc(var(--nav-h) + 60px) 5% 80px;
+      overflow: hidden;
+    }
+
+    /* Fondo radial sutil */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,168,76,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 50% 80%, rgba(255,255,255,0.02) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Líneas de cuadrícula muy sutiles */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 0%, black 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      padding: 8px 18px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 40px;
+      background: rgba(201,168,76,0.06);
+    }
+
+    .hero-label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold-mid);
+      box-shadow: 0 0 8px rgba(201,168,76,0.8);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.6; transform: scale(1.4); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 8.5rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 300;
+      color: var(--white-dim);
+      max-width: 540px;
+      margin: 0 auto 52px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+
+    /* Botón primario dorado */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 34px;
+      border-radius: 50px;
+      background: var(--gradient-gold);
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: transform 0.25s var(--ease-spring), box-shadow 0.3s;
+      box-shadow: 0 4px 24px rgba(201,168,76,0.25);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.04) translateY(-1px);
+      box-shadow: 0 8px 36px rgba(201,168,76,0.4);
+    }
+
+    /* Botón ghost */
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: border-color 0.3s, background 0.3s, transform 0.2s var(--ease-spring);
+      cursor: pointer;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.08);
+      transform: scale(1.02);
+    }
+
+    /* Imagen hero con efecto parallax */
+    .hero-card-wrap {
+      position: relative;
+      width: min(520px, 90vw);
+      margin: 0 auto;
+    }
+
+    .hero-card-glow {
+      position: absolute;
+      inset: -30px;
+      border-radius: 40px;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.18) 0%, transparent 70%);
+      filter: blur(20px);
+      z-index: 0;
+      animation: glow-breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes glow-breathe {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50%       { opacity: 1; transform: scale(1.04); }
+    }
+
+    .hero-card-img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-radius: 22px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 24px 80px rgba(0,0,0,0.7),
+        0 8px 24px rgba(0,0,0,0.5);
+      animation: float-card 6s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes float-card {
+      0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(-3deg); }
+      33%       { transform: translateY(-12px) rotateX(2deg) rotateY(2deg); }
+      66%       { transform: translateY(-6px) rotateX(-1deg) rotateY(-1deg); }
+    }
+
+    /* Scroll indicator */
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.4;
+      animation: fade-in-up 1.5s 1.8s var(--ease-smooth) both;
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to   { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+    }
+
+    .hero-scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--silver-mid);
+    }
+
+    .scroll-arrow {
+      width: 18px;
+      height: 28px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .scroll-arrow::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 6px;
+      background: var(--white);
+      border-radius: 2px;
+      animation: scroll-dot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scroll-dot {
+      0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* ============================================================
+       SEPARADOR CON DEGRADADO
+    ============================================================ */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    }
+
+    /* ============================================================
+       SECTION PRESENTACIÓN (PRODUCTO)
+    ============================================================ */
+    #producto {
+      padding: var(--section-pad) 5%;
+      position: relative;
+    }
+
+    #producto::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60%;
+      height: 100%;
+      background: radial-gradient(ellipse 60% 50% at 90% 50%, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .producto-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .producto-header {
+      max-width: 680px;
+      margin-bottom: 100px;
+    }
+
+    .producto-header .label {
+      margin-bottom: 20px;
+    }
+
+    .producto-header .headline {
+      margin-bottom: 24px;
+    }
+
+    /* Grid de features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .feature-card {
+      background: var(--black-card);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .feature-card:hover {
+      background: #1a1a1a;
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 28px;
+      opacity: 0.9;
+    }
+
+    .feature-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      color: var(--white);
+    }
+
+    .feature-desc {
+      font-size: 15px;
+      color: var(--white-dim);
+      line-height: 1.7;
+    }
+
+    /* Bloque grande con imagen */
+    .producto-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-top: 120px;
+    }
+
+    .producto-split-text .label {
+      margin-bottom: 18px;
+    }
+
+    .producto-split-text .headline {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      margin-bottom: 22px;
+    }
+
+    .producto-split-text .subhead {
+      margin-bottom: 36px;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .stat-item {}
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--white-dim);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .producto-split-image {
+      position: relative;
+    }
+
+    .card-image-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 32px 100px rgba(0,0,0,0.6);
+    }
+
+    .card-image-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    .card-image-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74,222,128,0.7);
+      flex-shrink: 0;
+    }
+
+    .badge-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .badge-sub {
+      font-size: 11px;
+      color: var(--white-dim);
+      margin-top: 1px;
+    }
+
+    /* ============================================================
+       ESPECIFICACIONES
+    ============================================================ */
+    #especificaciones {
+      padding: var(--section-pad) 5%;
+      background: var(--black-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #especificaciones::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .specs-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .specs-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 100px;
+    }
+
+    .specs-header .label { margin-bottom: 18px; }
+    .specs-header .headline { margin-bottom: 20px; }
+
+    /* Chips/tarjeta NFC */
+    .chip-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 100px;
+    }
+
+    .chip-visual {
+      position: relative;
+    }
+
+    .chip-image-frame {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(201,168,76,0.15),
+        0 40px 120px rgba(0,0,0,0.7);
+    }
+
+    .chip-image-frame img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Overlay efecto escaneo */
+    .chip-scan-line {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(201,168,76,0.08) 50%, transparent 60%);
+      animation: scan-sweep 3s ease-in-out infinite;
+    }
+
+    @keyframes scan-sweep {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .chip-specs-list {
+      list-style: none;
+    }
+
+    .chip-spec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .chip-spec-item:first-child {
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .spec-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .spec-icon-wrap svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .spec-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .spec-detail {
+      font-size: 13px;
+      color: var(--white-dim);
+      line-height: 1.5;
+    }
+
+    /* Grid de specs técnicas */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-bottom: 100px;
+    }
+
+    .tech-cell {
+      background: rgba(255,255,255,0.025);
+      padding: 40px 32px;
+      transition: background 0.3s;
+    }
+
+    .tech-cell:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .tech-cell-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      margin-bottom: 12px;
+    }
+
+    .tech-cell-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .tech-cell-desc {
+      font-size: 12px;
+      color: var(--white-dim);
+      line-height: 1.5;
+    }
+
+    /* Plataforma digital */
+    .platform-section {
+      background: var(--black-card);
+      border: 1px solid var(--black-border);
+      border-radius: 28px;
+      padding: 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .platform-section::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: var(--gradient-gold);
+    }
+
+    .platform-text .label { margin-bottom: 16px; }
+    .platform-text .headline {
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      margin-bottom: 20px;
+    }
+    .platform-text .subhead { margin-bottom: 32px; }
+
+    .platform-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .platform-feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--white-dim);
+    }
+
+    .platform-feature-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .platform-feature-check svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .platform-mockup {
+      position: relative;
+    }
+
+    /* Dashboard simulado con CSS */
+    .dashboard-frame {
+      background: var(--black-soft);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+
+    .dashboard-bar {
+      background: rgba(255,255,255,0.04);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .dash-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dash-dot:nth-child(1) { background: #ff5f57; }
+    .dash-dot:nth-child(2) { background: #febc2e; }
+    .dash-dot:nth-child(3) { background: #28c840; }
+
+    .dashboard-body {
+      padding: 24px;
+    }
+
+    .dash-title {
+      font-size: 12px;
+      color: var(--white-dim);
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    .dash-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .dash-stat {
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .dash-stat-num {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.03em;
+    }
+
+    .dash-stat-lbl {
+      font-size: 10px;
+      color: var(--white-dim);
+      margin-top: 4px;
+    }
+
+    .dash-chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
+    }
+
+    .dash-bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: rgba(201,168,76,0.2);
+      transition: background 0.3s;
+    }
+
+    .dash-bar:hover { background: rgba(201,168,76,0.4); }
+    .dash-bar:nth-child(3) { background: rgba(201,168,76,0.5); }
+    .dash-bar:nth-child(5) { background: rgba(201,168,76,0.65); }
+    .dash-bar:nth-child(7) { background: rgba(201,168,76,0.4); }
+
+    /* ============================================================
+       PEDIDO / ORDER
+    ============================================================ */
+    #pedido {
+      padding: var(--section-pad) 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #pedido::before {
+      content: '';
+      position: absolute;
+      bottom: -200px;
+      left: -200px;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .pedido-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .pedido-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .pedido-text .label { margin-bottom: 18px; }
+    .pedido-text .headline {
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      margin-bottom: 22px;
+    }
+    .pedido-text .subhead { margin-bottom: 36px; }
+
+    .pedido-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      counter-reset: step;
+    }
+
+    .pedido-step {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      position: relative;
+    }
+
+    .pedido-step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 60px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(201,168,76,0.25), transparent);
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold-light);
+      flex-shrink: 0;
+      counter-increment: step;
+    }
+
+    .step-content {}
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--white-dim);
+      line-height: 1.6;
+    }
+
+    .pedido-card-stack {
+      position: relative;
+      height: 380px;
+    }
+
+    .pedido-card {
+      position: absolute;
+      width: 85%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+
+    .pedido-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .pedido-card:nth-child(1) {
+      top: 0;
+      left: 0;
+      transform: rotate(-4deg);
+      z-index: 1;
+    }
+
+    .pedido-card:nth-child(2) {
+      top: 30px;
+      left: 8%;
+      transform: rotate(0deg);
+      z-index: 2;
+    }
+
+    .pedido-card:nth-child(3) {
+      top: 60px;
+      left: 15%;
+      transform: rotate(3deg);
+      z-index: 3;
+    }
+
+    .pedido-card:nth-child(3):hover {
+      transform: rotate(0deg) scale(1.04) translateY(-10px);
+      transition: transform 0.5s var(--ease-spring);
+      z-index: 10;
+    }
+
+    /* ============================================================
+       CTA FINAL
+    ============================================================ */
+    #cta {
+      padding: 180px 5%;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Fondo animado con gradiente radial */
+    #cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 30% 70%, rgba(255,255,255,0.02) 0%, transparent 60%);
+    }
+
+    /* Línea superior dorada */
+    #cta::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gradient-gold);
+      opacity: 0.4;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .cta-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      padding: 8px 20px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 40px;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+
+    .cta-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--white-dim);
+      margin-bottom: 52px;
+      line-height: 1.7;
+    }
+
+    /* Botón WhatsApp */
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 40px;
+      border-radius: 60px;
+      background: #25d366;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: transform 0.25s var(--ease-spring),
+                  box-shadow 0.3s,
+                  background 0.3s;
+      box-shadow: 0 4px 28px rgba(37,211,102,0.35);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-whatsapp:hover {
+      transform: scale(1.04) translateY(-2px);
+      box-shadow: 0 10px 40px rgba(37,211,102,0.5);
+      background: #20bd5a;
+    }
+
+    .btn-whatsapp svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .cta-note {
+      margin-top: 28px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      padding: 56px 5% 40px;
+      border-top: 1px solid var(--black-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .footer-powered {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-powered img {
+      height: 20px;
+      width: auto;
+      opacity: 0.55;
+      transition: opacity 0.3s;
+    }
+
+    .footer-powered:hover img {
+      opacity: 0.8;
+    }
+
+    .footer-brand {
+      font-size: 13px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-brand strong {
+      color: rgba(255,255,255,0.5);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      :root { --section-pad: 90px; }
+
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-card { padding: 36px 28px; }
+
+      .producto-split { grid-template-columns: 1fr; gap: 50px; }
+      .chip-showcase  { grid-template-columns: 1fr; gap: 40px; }
+      .tech-grid      { grid-template-columns: repeat(2, 1fr); }
+      .platform-section { grid-template-columns: 1fr; padding: 48px 32px; }
+      .pedido-split   { grid-template-columns: 1fr; }
+      .pedido-card-stack { height: 260px; }
+
+      .stat-row { gap: 24px; }
+    }
+
+    @media (max-width: 580px) {
+      :root { --nav-h: 60px; }
+
+      .tech-grid { grid-template-columns: 1fr 1fr; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .platform-section { padding: 40px 24px; }
+      .footer-powered { flex-direction: column; }
+    }
+
+    /* ============================================================
+       MOBILE MENU
+    ============================================================ */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--black-border);
+      z-index: 899;
+      padding: 24px 5% 32px;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #mobile-menu.open {
+      display: flex;
+    }
+
+    #mobile-menu a {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.8);
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: color 0.2s;
+    }
+
+    #mobile-menu a:hover { color: var(--white); }
+    #mobile-menu a:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVEGACIÓN
+============================================================ -->
+<nav id="navbar" role="navigation" aria-label="Navegación principal">
+  <a href="#hero" aria-label="Inicio">
+    <img src="img/logowhite.svg" alt="SON Identity" class="nav-logo" id="nav-logo" />
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#hero">Inicio</a></li>
+    <li><a href="#especificaciones">Especificaciones</a></li>
+    <li><a href="#cta" class="nav-cta">Pedir mi SON ID</a></li>
+  </ul>
+
+  <button class="nav-hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Menú móvil -->
+<div id="mobile-menu" role="menu">
+  <a href="#hero"             role="menuitem">Inicio</a>
+  <a href="#especificaciones" role="menuitem">Especificaciones</a>
+  <a href="#cta"              role="menuitem">Pedir mi SON ID</a>
+</div>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero" aria-label="Introducción">
+
+  <div class="hero-label reveal">
+    <span class="hero-label-dot"></span>
+    <span class="label">NFC · Metal · Networking inteligente</span>
+  </div>
+
+  <h1 class="hero-title reveal" style="transition-delay:0.1s">
+    <span>La nueva forma</span>
+    <span class="metallic-text">de conectar.</span>
+  </h1>
+
+  <p class="hero-sub reveal" style="transition-delay:0.2s">
+    Una sola tarjeta metálica. Todo tu mundo profesional.<br />
+    SON Identity reimagina el networking para la era digital.
+  </p>
+
+  <div class="hero-actions reveal" style="transition-delay:0.3s">
+    <a href="#cta" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M9.5 4.5L15 10l-5.5 5.5M15 10H3"/>
+      </svg>
+      Obtener SON Identity
+    </a>
+    <a href="#producto" class="btn-ghost">Descubrir más</a>
+  </div>
+
+  <div class="hero-card-wrap reveal--scale" style="transition-delay:0.4s">
+    <div class="hero-card-glow"></div>
+    <img
+      src="img/IDENTITY.jpeg"
+      alt="Tarjeta metálica SON Identity"
+      class="hero-card-img"
+      id="hero-card"
+    />
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     PRESENTACIÓN DEL PRODUCTO
+============================================================ -->
+<section id="producto" aria-label="Presentación del producto">
+  <div class="producto-inner">
+
+    <div class="producto-header">
+      <p class="label reveal">El producto</p>
+      <h2 class="headline reveal" style="transition-delay:0.1s">
+        Una tarjeta.<br />
+        <span class="metallic-text--silver">Contactos ilimitados.</span>
+      </h2>
+      <p class="subhead reveal" style="transition-delay:0.2s">
+        SON Identity transforma cada apretón de manos en una conexión digital permanente.
+        Sin papel. Sin plástico. Sin fricción.
+      </p>
+    </div>
+
+    <!-- Grid 3 features -->
+    <div class="features-grid stagger">
+
+      <div class="feature-card">
+        <svg class="feature-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="22" r="21" stroke="url(#g1)" stroke-width="1"/>
+          <path d="M14 22c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M17 22c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="22" cy="22" r="2" fill="url(#g1)"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="44" y2="44">
+              <stop offset="0%" stop-color="#e8d9b0"/>
+              <stop offset="100%" stop-color="#c9a84c"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h3 class="feature-title">Comparte al instante</h3>
+        <p class="feature-desc">
+          Acerca tu tarjeta a cualquier smartphone. Sin apps. Sin pasos extra.
+          Tu información llega en menos de un segundo.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <svg class="feature-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="22" r="21" stroke="url(#g2)" stroke-width="1"/>
+          <rect x="13" y="14" width="18" height="16" rx="3" stroke="url(#g2)" stroke-width="1.5"/>
+          <path d="M17 20h10M17 24h6" stroke="url(#g2)" stroke-width="1.5" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="g2" x1="0" y1="0" x2="44" y2="44">
+              <stop offset="0%" stop-color="#e8d9b0"/>
+              <stop offset="100%" stop-color="#c9a84c"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h3 class="feature-title">Recibe contactos digitales</h3>
+        <p class="feature-desc">
+          Cuando alguien accede a tu perfil, puede compartirte sus datos al instante.
+          Tu red crece automáticamente.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <svg class="feature-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="22" r="21" stroke="url(#g3)" stroke-width="1"/>
+          <path d="M14 32V20l8-8 8 8v12" stroke="url(#g3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="19" y="26" width="6" height="6" rx="1" stroke="url(#g3)" stroke-width="1.5"/>
+          <defs>
+            <linearGradient id="g3" x1="0" y1="0" x2="44" y2="44">
+              <stop offset="0%" stop-color="#e8d9b0"/>
+              <stop offset="100%" stop-color="#c9a84c"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h3 class="feature-title">Centraliza tu networking</h3>
+        <p class="feature-desc">
+          Todas tus interacciones quedan almacenadas en tu plataforma privada.
+          Nunca pierdas un contacto valioso.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Split con imagen -->
+    <div class="producto-split">
+      <div class="producto-split-text">
+        <p class="label reveal">Diseño inteligente</p>
+        <h2 class="headline reveal" style="transition-delay:0.1s">
+          Tu identidad<br />
+          <span class="metallic-text">profesional,<br />en metal.</span>
+        </h2>
+        <p class="subhead reveal" style="transition-delay:0.2s">
+          Construida con materiales premium. Diseñada para causar impresión
+          desde el primer instante. Personalizable para reflejar exactamente
+          quién eres.
+        </p>
+        <div class="stat-row stagger">
+          <div class="stat-item">
+            <div class="stat-number">NFC</div>
+            <div class="stat-label">Tecnología integrada</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Tarjeta para todo</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Contactos posibles</div>
+          </div>
+        </div>
+      </div>
+      <div class="producto-split-image reveal--right">
+        <div class="card-image-wrap">
+          <img src="img/identity2.jpg" alt="Detalle tarjeta metálica SON Identity" />
+          <div class="card-image-badge">
+            <div class="badge-dot"></div>
+            <div>
+              <div class="badge-text">NFC activo</div>
+              <div class="badge-sub">Listo para compartir</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     ESPECIFICACIONES
+============================================================ -->
+<section id="especificaciones" aria-label="Especificaciones técnicas">
+  <div class="specs-inner">
+
+    <div class="specs-header">
+      <p class="label reveal">Tecnología</p>
+      <h2 class="headline reveal" style="transition-delay:0.1s">
+        Ingeniería<br />
+        <span class="metallic-text">de alto nivel.</span>
+      </h2>
+      <p class="subhead reveal" style="transition-delay:0.2s; margin: 0 auto;">
+        Cada componente fue seleccionado para ofrecer la experiencia
+        más confiable, durable y sofisticada del mercado.
+      </p>
+    </div>
+
+    <!-- Chip showcase -->
+    <div class="chip-showcase">
+      <div class="chip-visual reveal--left">
+        <div class="chip-image-frame">
+          <img src="img/identity3.jpg" alt="Tecnología NFC SON Identity" />
+          <div class="chip-scan-line" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div>
+        <ul class="chip-specs-list stagger">
+
+          <li class="chip-spec-item">
+            <div class="spec-icon-wrap">
+              <svg viewBox="0 0 18 18" fill="none" stroke="url(#gs1)" stroke-width="1.5">
+                <path d="M9 2a7 7 0 100 14A7 7 0 009 2z"/>
+                <path d="M6 9c0-1.66 1.34-3 3-3s3 1.34 3 3-1.34 3-3 3" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="gs1" x1="0" y1="0" x2="18" y2="18">
+                    <stop offset="0%" stop-color="#e8d9b0"/>
+                    <stop offset="100%" stop-color="#c9a84c"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div class="spec-name">Chip NXP NTAG216</div>
+              <div class="spec-detail">La solución NFC más avanzada del mercado. Máxima compatibilidad con dispositivos iOS y Android. Memoria de 888 bytes.</div>
+            </div>
+          </li>
+
+          <li class="chip-spec-item">
+            <div class="spec-icon-wrap">
+              <svg viewBox="0 0 18 18" fill="none" stroke="url(#gs2)" stroke-width="1.5">
+                <rect x="2" y="5" width="14" height="9" rx="2"/>
+                <path d="M6 5V4a3 3 0 016 0v1"/>
+                <defs>
+                  <linearGradient id="gs2" x1="0" y1="0" x2="18" y2="18">
+                    <stop offset="0%" stop-color="#e8d9b0"/>
+                    <stop offset="100%" stop-color="#c9a84c"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div class="spec-name">Construcción en metal</div>
+              <div class="spec-detail">Acabado premium duradero. Resistencia superior a las tarjetas convencionales. Sensación de peso y solidez únicos.</div>
+            </div>
+          </li>
+
+          <li class="chip-spec-item">
+            <div class="spec-icon-wrap">
+              <svg viewBox="0 0 18 18" fill="none" stroke="url(#gs3)" stroke-width="1.5">
+                <path d="M9 2l2.5 5 5.5.8-4 3.9.95 5.5L9 14.6 4.05 17.2 5 11.7 1 7.8l5.5-.8z"/>
+                <defs>
+                  <linearGradient id="gs3" x1="0" y1="0" x2="18" y2="18">
+                    <stop offset="0%" stop-color="#e8d9b0"/>
+                    <stop offset="100%" stop-color="#c9a84c"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div class="spec-name">Diseño personalizable</div>
+              <div class="spec-detail">Grabado láser, acabados y configuraciones a medida. Tu tarjeta representa exactamente tu identidad profesional.</div>
+            </div>
+          </li>
+
+          <li class="chip-spec-item">
+            <div class="spec-icon-wrap">
+              <svg viewBox="0 0 18 18" fill="none" stroke="url(#gs4)" stroke-width="1.5">
+                <rect x="2" y="3" width="14" height="12" rx="2"/>
+                <path d="M6 7h6M6 11h4"/>
+                <defs>
+                  <linearGradient id="gs4" x1="0" y1="0" x2="18" y2="18">
+                    <stop offset="0%" stop-color="#e8d9b0"/>
+                    <stop offset="100%" stop-color="#c9a84c"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div class="spec-name">Plataforma digital privada</div>
+              <div class="spec-detail">Ecosistema seguro para gestionar contactos, métricas de networking y toda tu actividad profesional digital.</div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+    <!-- Grid técnico -->
+    <div class="tech-grid stagger">
+      <div class="tech-cell">
+        <div class="tech-cell-label">Chip</div>
+        <div class="tech-cell-value">NTAG216</div>
+        <div class="tech-cell-desc">NXP Semiconductors — estándar ISO/IEC 14443-A</div>
+      </div>
+      <div class="tech-cell">
+        <div class="tech-cell-label">Alcance</div>
+        <div class="tech-cell-value">~10 cm</div>
+        <div class="tech-cell-desc">Lectura precisa, corto rango por seguridad</div>
+      </div>
+      <div class="tech-cell">
+        <div class="tech-cell-label">Memoria</div>
+        <div class="tech-cell-value">888 B</div>
+        <div class="tech-cell-desc">Capacidad NDEF, escritura y lectura NFC</div>
+      </div>
+      <div class="tech-cell">
+        <div class="tech-cell-label">Compatibilidad</div>
+        <div class="tech-cell-value">Universal</div>
+        <div class="tech-cell-desc">iOS · Android · sin app requerida</div>
+      </div>
+    </div>
+
+    <!-- Plataforma digital -->
+    <div class="platform-section reveal">
+      <div class="platform-text">
+        <p class="label">Plataforma privada</p>
+        <h3 class="headline">Tu red.<br /><span class="metallic-text">Organizada.</span></h3>
+        <p class="subhead" style="margin-bottom: 32px;">
+          SON Identity incluye acceso a tu plataforma digital privada.
+          Un espacio diseñado para gestionar todo lo que importa de tu networking.
+        </p>
+        <ul class="platform-features">
+          <li class="platform-feature">
+            <div class="platform-feature-check">
+              <svg viewBox="0 0 10 10" fill="none" stroke="url(#gc1)" stroke-width="1.5">
+                <path d="M2 5l2.5 2.5L8 3" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="gc1"><stop offset="0%" stop-color="#e8d9b0"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient>
+                </defs>
+              </svg>
+            </div>
+            Contactos compartidos registrados
+          </li>
+          <li class="platform-feature">
+            <div class="platform-feature-check">
+              <svg viewBox="0 0 10 10" fill="none" stroke="url(#gc2)" stroke-width="1.5">
+                <path d="M2 5l2.5 2.5L8 3" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="gc2"><stop offset="0%" stop-color="#e8d9b0"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient>
+                </defs>
+              </svg>
+            </div>
+            Contactos recibidos organizados
+          </li>
+          <li class="platform-feature">
+            <div class="platform-feature-check">
+              <svg viewBox="0 0 10 10" fill="none" stroke="url(#gc3)" stroke-width="1.5">
+                <path d="M2 5l2.5 2.5L8 3" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="gc3"><stop offset="0%" stop-color="#e8d9b0"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient>
+                </defs>
+              </svg>
+            </div>
+            Métricas de networking en tiempo real
+          </li>
+          <li class="platform-feature">
+            <div class="platform-feature-check">
+              <svg viewBox="0 0 10 10" fill="none" stroke="url(#gc4)" stroke-width="1.5">
+                <path d="M2 5l2.5 2.5L8 3" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="gc4"><stop offset="0%" stop-color="#e8d9b0"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient>
+                </defs>
+              </svg>
+            </div>
+            Historial completo de interacciones
+          </li>
+          <li class="platform-feature">
+            <div class="platform-feature-check">
+              <svg viewBox="0 0 10 10" fill="none" stroke="url(#gc5)" stroke-width="1.5">
+                <path d="M2 5l2.5 2.5L8 3" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="gc5"><stop offset="0%" stop-color="#e8d9b0"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient>
+                </defs>
+              </svg>
+            </div>
+            Acceso privado y seguro
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dashboard visual simulado -->
+      <div class="platform-mockup reveal--right">
+        <div class="dashboard-frame">
+          <div class="dashboard-bar">
+            <div class="dash-dot"></div>
+            <div class="dash-dot"></div>
+            <div class="dash-dot"></div>
+          </div>
+          <div class="dashboard-body">
+            <div class="dash-title">SON Identity · Dashboard</div>
+            <div class="dash-stat-row">
+              <div class="dash-stat">
+                <div class="dash-stat-num">247</div>
+                <div class="dash-stat-lbl">Contactos</div>
+              </div>
+              <div class="dash-stat">
+                <div class="dash-stat-num">89</div>
+                <div class="dash-stat-lbl">Este mes</div>
+              </div>
+              <div class="dash-stat">
+                <div class="dash-stat-num">98%</div>
+                <div class="dash-stat-lbl">Tasa digital</div>
+              </div>
+            </div>
+            <div class="dash-chart-bars">
+              <div class="dash-bar" style="height:40%"></div>
+              <div class="dash-bar" style="height:55%"></div>
+              <div class="dash-bar" style="height:75%"></div>
+              <div class="dash-bar" style="height:60%"></div>
+              <div class="dash-bar" style="height:90%"></div>
+              <div class="dash-bar" style="height:70%"></div>
+              <div class="dash-bar" style="height:85%"></div>
+              <div class="dash-bar" style="height:65%"></div>
+              <div class="dash-bar" style="height:95%"></div>
+              <div class="dash-bar" style="height:80%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     PEDIDO
+============================================================ -->
+<section id="pedido" aria-label="Cómo pedir">
+  <div class="pedido-inner">
+    <div class="pedido-split">
+
+      <div class="pedido-text">
+        <p class="label reveal">Pedido exclusivo</p>
+        <h2 class="headline reveal" style="transition-delay:0.1s">
+          Solo por<br />
+          <span class="metallic-text">pedido directo.</span>
+        </h2>
+        <p class="subhead reveal" style="transition-delay:0.2s">
+          SON Identity está disponible únicamente a través de pedido personal.
+          Cada tarjeta es fabricada con atención individual para garantizar
+          la máxima calidad y personalización.
+        </p>
+
+        <div class="pedido-steps stagger">
+          <div class="pedido-step">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <div class="step-title">Contacto inicial</div>
+              <div class="step-desc">Escríbenos por WhatsApp para iniciar tu pedido. Te guiaremos en el proceso.</div>
+            </div>
+          </div>
+          <div class="pedido-step">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <div class="step-title">Personalización</div>
+              <div class="step-desc">Define el diseño, grabado y acabado de tu tarjeta SON Identity.</div>
+            </div>
+          </div>
+          <div class="pedido-step">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <div class="step-title">Fabricación premium</div>
+              <div class="step-desc">Tu tarjeta es producida con los más altos estándares de calidad.</div>
+            </div>
+          </div>
+          <div class="pedido-step">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <div class="step-title">Activación y entrega</div>
+              <div class="step-desc">Recibe tu tarjeta activa y lista para transformar tu networking.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pedido-card-stack reveal--right">
+        <div class="pedido-card">
+          <img src="img/identity3.jpg" alt="SON Identity card" />
+        </div>
+        <div class="pedido-card">
+          <img src="img/identity2.jpg" alt="SON Identity card" />
+        </div>
+        <div class="pedido-card">
+          <img src="img/identity1.png" alt="SON Identity card principal" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider" style="background: linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent);"></div>
+
+<!-- ============================================================
+     CTA FINAL
+============================================================ -->
+<section id="cta" aria-label="Obtener SON Identity">
+  <div class="cta-inner">
+    <div class="cta-label reveal">
+      <span class="hero-label-dot"></span>
+      <span class="label">Disponible ahora</span>
+    </div>
+
+    <h2 class="cta-title reveal" style="transition-delay:0.1s">
+      Obten tu<br />
+      <span class="metallic-text">SON IDentity</span><br />
+      ahora.
+    </h2>
+
+    <p class="cta-sub reveal" style="transition-delay:0.2s">
+      Únete a los profesionales que ya transformaron su networking.
+      Una sola tarjeta. Una sola decisión.
+    </p>
+
+    <div class="reveal" style="transition-delay:0.3s">
+      <a
+        href="https://wa.me/34692257776?text=Hola%20Denilson,%20me%20gustaría%20ordenar%20mi%20SON%20IDentity"
+        class="btn-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        id="whatsapp-btn"
+        aria-label="Contactar por WhatsApp"
+      >
+        <!-- Ícono WhatsApp SVG oficial -->
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Contactar por WhatsApp
+      </a>
+    </div>
+
+    <p class="cta-note reveal" style="transition-delay:0.4s">
+      Pedido directo · Fabricación personalizada · Envío a todo el mundo
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <a href="https://denilsonarnau.netlify.app" class="footer-powered" aria-label="Powered by SON">
+    <span>Powered by</span>
+    <img src="img/logowhite.svg" alt="SON — Sistemas Organizados at Network" id="footer-logo" />
+  </a>
+  <p class="footer-brand">
+    &copy; 2025 <strong>Sistemas Organizados at Network</strong> · Todos los derechos reservados
+  </p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ============================================================
+     1. FAVICON DINÁMICO — detecta modo claro/oscuro
+     Estrategia doble:
+       - Los dos <link media="..."> cubren la carga inicial sin flash.
+       - Este JS actualiza el fallback <link> en tiempo real si el usuario
+         cambia el tema mientras la página está abierta (necesario en Safari
+         y navegadores que ignoran media en favicons).
+  ============================================================ */
+  (function () {
+    const fallback = document.getElementById('favicon-fallback');
+    const mq       = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function updateFavicon(isDark) {
+      fallback.href = isDark ? 'img/logowhite.svg' : 'img/logoblack.svg';
+    }
+
+    updateFavicon(mq.matches);
+
+    mq.addEventListener('change', function (e) {
+      updateFavicon(e.matches);
+    });
+  })();
+
+
+  /* ============================================================
+     2. NAVBAR — efecto al hacer scroll
+  ============================================================ */
+  (function () {
+    const navbar = document.getElementById('navbar');
+
+    function onScroll() {
+      if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // estado inicial
+  })();
+
+
+  /* ============================================================
+     3. MENÚ MÓVIL
+  ============================================================ */
+  (function () {
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', function () {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen.toString());
+    });
+
+    // Cerrar al hacer click en un enlace
+    mobileMenu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+
+
+  /* ============================================================
+     4. SCROLL ANIMATIONS — Intersection Observer
+  ============================================================ */
+  (function () {
+    /**
+     * Observamos todos los elementos con clases de animación.
+     * Al entrar en el viewport, se añade la clase "visible"
+     * que activa las transiciones CSS definidas arriba.
+     */
+    const targets = document.querySelectorAll(
+      '.reveal, .reveal--left, .reveal--right, .reveal--scale, .stagger'
+    );
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60px 0px', // dispara un poco antes de que salga de pantalla
+      threshold: 0.08
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Dejamos de observar una vez animado para no revertir
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    targets.forEach(function (el) {
+      observer.observe(el);
+    });
+  })();
+
+
+  /* ============================================================
+     5. PARALLAX SUAVE — hero card al hacer scroll
+  ============================================================ */
+  (function () {
+    const card = document.getElementById('hero-card');
+    if (!card) return;
+
+    let ticking = false;
+
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      // Movimiento muy sutil hacia arriba al desplazarse
+      const offset = scrollY * 0.12;
+      card.style.transform =
+        'translateY(' + (-offset) + 'px) rotateX(0deg) rotateY(-3deg)';
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+
+  /* ============================================================
+     6. INCLINACIÓN 3D SUTIL EN HOVER — hero card
+  ============================================================ */
+  (function () {
+    const wrap = document.querySelector('.hero-card-wrap');
+    const card = document.getElementById('hero-card');
+    if (!wrap || !card) return;
+
+    wrap.addEventListener('mousemove', function (e) {
+      const rect   = wrap.getBoundingClientRect();
+      const cx     = rect.left + rect.width  / 2;
+      const cy     = rect.top  + rect.height / 2;
+      const dx     = (e.clientX - cx) / (rect.width  / 2);
+      const dy     = (e.clientY - cy) / (rect.height / 2);
+      const rotX   =  dy * -6;
+      const rotY   =  dx *  8;
+
+      card.style.transition = 'transform 0.15s ease-out';
+      card.style.transform  =
+        'perspective(800px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.02)';
+    });
+
+    wrap.addEventListener('mouseleave', function () {
+      card.style.transition = 'transform 0.8s ease-out';
+      card.style.transform  = '';
+    });
+  })();
+
+
+  /* ============================================================
+     7. SMOOTH REVEAL DE HERO AL CARGAR
+  ============================================================ */
+  (function () {
+    // La primera sección revela inmediatamente al cargar
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        document.querySelectorAll('#hero .reveal, #hero .reveal--scale').forEach(function (el) {
+          el.classList.add('visible');
+        });
+      }, 80);
+    });
+  })();
+</script>
+
+</body>
+</html>
