@@ -305,49 +305,22 @@
     }
 
     /* ============================================================
-       HERO SECTION — scroll animation background
+       HERO SECTION
     ============================================================ */
     #hero {
       position: relative;
-      height: 420vh;   /* defines scroll range: user scrolls through this to drive animation */
-      display: block;
-    }
-
-    /* Sticky inner wrapper — stays in viewport while #hero parent scrolls */
-    .hero-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       text-align: center;
-      padding-top: calc(var(--nav-h) + 120px);
+      padding: calc(var(--nav-h) + 60px) 5% 80px;
       overflow: hidden;
     }
 
-    /* Canvas background — video frames drawn here */
-    #hero-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 1.4s ease;
-      will-change: contents;           /* hint GPU compositor */
-      transform: translateZ(0);        /* force own compositing layer */
-      image-rendering: auto;           /* let browser pick best quality */
-    }
-
-    #hero-canvas.loaded {
-      opacity: 1;
-    }
-
-    /* Fondo radial sutil — sobre el canvas */
-    .hero-sticky::before {
+    /* Fondo radial sutil */
+    #hero::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -355,11 +328,10 @@
         radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,168,76,0.06) 0%, transparent 70%),
         radial-gradient(ellipse 50% 50% at 50% 80%, rgba(255,255,255,0.02) 0%, transparent 60%);
       pointer-events: none;
-      z-index: 1;
     }
 
-    /* Líneas de cuadrícula muy sutiles — sobre el canvas */
-    .hero-sticky::after {
+    /* Líneas de cuadrícula muy sutiles */
+    #hero::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -369,20 +341,7 @@
       background-size: 80px 80px;
       mask-image: radial-gradient(ellipse 90% 90% at 50% 0%, black 0%, transparent 70%);
       pointer-events: none;
-      z-index: 1;
     }
-
-    /* Hero content — above canvas and overlays */
-    .hero-label,
-    .hero-title,
-    .hero-sub,
-    .hero-actions,
-    .hero-card-wrap {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .hero-scroll-hint { z-index: 2; } /* already position: absolute */
 
     .hero-label {
       display: inline-flex;
@@ -394,8 +353,6 @@
       border-radius: 40px;
       background: rgba(201,168,76,0.06);
     }
-
-    
 
     .hero-label-dot {
       width: 6px;
@@ -417,27 +374,21 @@
       font-weight: 700;
       line-height: 1.0;
       letter-spacing: -0.04em;
-      margin-bottom: 50px;
-      margin-top: -120px;
+      margin-bottom: 28px;
     }
 
     .hero-title span {
       display: block;
-      margin-bottom: 210px;
     }
-
-  
 
     .hero-sub {
       font-size: clamp(1rem, 2.2vw, 1.25rem);
       font-weight: 300;
       color: var(--white-dim);
       max-width: 540px;
-    margin: 40px auto 80px;
+      margin: 0 auto 52px;
       line-height: 1.7;
     }
-
-    
 
     .hero-actions {
       display: flex;
@@ -1397,33 +1348,11 @@
     /* ============================================================
        RESPONSIVE
     ============================================================ */
-    /* ============================================================
-       RESPONSIVE — TABLET / MOBILE (≤900px)
-    ============================================================ */
     @media (max-width: 900px) {
       :root { --section-pad: 90px; }
 
-      /* Nav — always show subtle dark tint so hamburger is readable
-         against any canvas frame (light or dark) */
-      #navbar:not(.scrolled) {
-        background: rgba(0, 0, 0, 0.58);
-        backdrop-filter: blur(18px) saturate(160%);
-        -webkit-backdrop-filter: blur(18px) saturate(160%);
-        border-color: rgba(255, 255, 255, 0.07);
-      }
-
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
-
-      /* Hamburger lines — add subtle shadow so they're always
-         visible even if a bright canvas frame sits behind them */
-      .nav-hamburger span {
-        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.9));
-      }
-
-      /* Hero — slightly shorter scroll range on tablet */
-      #hero { height: 380vh; }
-
 
       .features-grid { grid-template-columns: 1fr; }
       .feature-card { padding: 36px 28px; }
@@ -1436,63 +1365,15 @@
       .pedido-card-stack { height: 260px; }
 
       .stat-row { gap: 24px; }
-
-      /* Eco section */
-      .eco-visual-grid { grid-template-columns: 1fr 1fr; }
-      .eco-img-wrap--logo { display: none; }
-      .eco-product-split { grid-template-columns: 1fr; gap: 50px; }
-      .eco-vision-grid { grid-template-columns: repeat(2, 1fr); }
-      .eco-impact-block { padding: 60px 36px; }
     }
 
-    /* ============================================================
-       RESPONSIVE — MOBILE (≤580px)
-    ============================================================ */
     @media (max-width: 580px) {
       :root { --nav-h: 60px; }
 
-      /* Hero — compact scroll range on small phones */
-      #hero { height: 320vh; }
-
-      /* Hero sticky — tighter padding so content breathes */
-      .hero-sticky {
-        padding: calc(var(--nav-h) + 32px) 5% 60px;
-        justify-content: flex-start;
-        padding-top: calc(var(--nav-h) + 48px);
-      }
-
-      /* Title: tighter on small screens */
-      .hero-title {
-        font-size: clamp(2.4rem, 10vw, 3.5rem);
-        margin-bottom: 18px;
-      }
-
-      /* Subtitle: prevent overflow */
-      .hero-sub {
-        font-size: clamp(0.9rem, 4vw, 1rem);
-        max-width: 100%;
-        padding: 0 4px;
-      }
-
-      /* Hero label — reduce margin below */
-      .hero-label { margin-bottom: 20px; }
-
-      /* Hero actions — stack vertically */
-      .hero-actions { flex-direction: column; align-items: center; }
-
-      /* Hero card — smaller on mobile so it doesn't crowd the text */
-      .hero-card-wrap { width: min(300px, 80vw); }
-
-      /* Other sections */
       .tech-grid { grid-template-columns: 1fr 1fr; }
+      .hero-actions { flex-direction: column; align-items: center; }
       .platform-section { padding: 40px 24px; }
       .footer-powered { flex-direction: column; }
-
-      /* Eco section */
-      .eco-visual-grid { grid-template-columns: 1fr; }
-      .eco-vision-grid { grid-template-columns: 1fr 1fr; }
-      .eco-impact-block { padding: 48px 24px; }
-      .eco-impact-percent { font-size: clamp(4rem, 18vw, 6rem); }
     }
 
     /* ============================================================
@@ -2013,42 +1894,47 @@
      HERO
 ============================================================ -->
 <section id="hero" aria-label="Introducción">
-  <div class="hero-sticky">
 
-    <!-- Canvas background — frames driven by scroll position -->
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
-<noscript>
-  <img src="/fallback.jpg" alt="Tarjeta NFC metálica SON Identity">
-</noscript>
-
-    <h1 class="hero-title reveal" style="transition-delay:0.1s">
-      <span>Tarjeta NFC metálica</span>
-      <span class="metallic-text">Networking profesional.</span>
-    </h1>
-
-    <p class="hero-sub reveal" style="transition-delay:0.2s">
-      Una sola tarjeta metálica. Todo tu mundo profesional.<br />
-      SON Identity reimagina el networking para la era digital.
-    </p>
-
-    <div class="hero-actions reveal" style="transition-delay:0.3s">
-      <a href="#cta" class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M9.5 4.5L15 10l-5.5 5.5M15 10H3"/>
-        </svg>
-        Obtener SON Identity
-      </a>
-      <a href="#producto" class="btn-ghost">Descubrir más</a>
-    </div>
-
-    
-
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-arrow"></div>
-    </div>
-
+  <div class="hero-label reveal">
+    <span class="hero-label-dot"></span>
+    <span class="label">NFC · Metal · Networking inteligente</span>
   </div>
+
+  <h1 class="hero-title reveal" style="transition-delay:0.1s">
+    <span>La nueva forma</span>
+    <span class="metallic-text">de conectar.</span>
+  </h1>
+
+  <p class="hero-sub reveal" style="transition-delay:0.2s">
+    Una sola tarjeta metálica. Todo tu mundo profesional.<br />
+    SON Identity reimagina el networking para la era digital.
+  </p>
+
+  <div class="hero-actions reveal" style="transition-delay:0.3s">
+    <a href="#cta" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M9.5 4.5L15 10l-5.5 5.5M15 10H3"/>
+      </svg>
+      Obtener SON Identity
+    </a>
+    <a href="#producto" class="btn-ghost">Descubrir más</a>
+  </div>
+
+  <div class="hero-card-wrap reveal--scale" style="transition-delay:0.4s">
+    <div class="hero-card-glow"></div>
+    <img
+      src="img/IDENTITY.jpeg"
+      alt="Tarjeta metálica SON Identity"
+      class="hero-card-img"
+      id="hero-card"
+    />
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+
 </section>
 
 <div class="section-divider"></div>
@@ -2980,13 +2866,6 @@
     });
   })();
 </script>
-
-  <!-- ============================================================
-       GSAP + ScrollTrigger — hero scroll animation
-  ============================================================ -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="script-scroll.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,335 @@
+/* ============================================================
+   SCROLL ANIMATION — styles-scroll.css
+   Apple-style frame-by-frame canvas animation
+============================================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --black:       #000000;
+  --white:       #ffffff;
+  --white-dim:   #a8a8a8;
+  --gold-light:  #e8d9b0;
+  --gold-mid:    #c9a84c;
+  --gradient-gold: linear-gradient(135deg, #e8d9b0 0%, #c9a84c 35%, #f5edd5 55%, #8a6a1e 80%, #c9a84c 100%);
+
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-text:    'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  --ease-smooth:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+html {
+  font-size: 16px;
+  /* ScrollTrigger needs default scroll behavior */
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   LOADER SCREEN
+============================================================ */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  transition: opacity 0.8s var(--ease-smooth),
+              visibility 0.8s var(--ease-smooth);
+}
+
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-logo {
+  height: 32px;
+  width: auto;
+  opacity: 0.7;
+}
+
+.loader-track {
+  width: 200px;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-bar {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-gold);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.loader-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ============================================================
+   SCROLL ANIMATION SECTION
+   The section height controls how many px of scroll = full anim
+============================================================ */
+#scroll-scene {
+  /* Height = how long the scroll animation lasts.
+     Adjust multiplier to make it faster/slower. */
+  height: 600vh;
+  position: relative;
+}
+
+/* Sticky container — stays in viewport while parent scrolls */
+.scroll-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   CANVAS
+============================================================ */
+#scroll-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* object-fit: cover behavior is handled in JS */
+  display: block;
+}
+
+/* ============================================================
+   VIGNETTE — subtle depth on edges
+============================================================ */
+.scroll-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 100% at 50% 50%,
+      transparent 50%,
+      rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================================
+   TEXT OVERLAY
+============================================================ */
+.scroll-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+  pointer-events: none;
+}
+
+.scroll-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin-bottom: 20px;
+  /* Painted with gold gradient */
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.1s var(--ease-smooth),
+              transform 1.1s var(--ease-smooth);
+}
+
+.scroll-title.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  max-width: 480px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1.1s 0.15s var(--ease-smooth),
+              transform 1.1s 0.15s var(--ease-smooth);
+}
+
+.scroll-subtitle.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll hint at bottom */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.6s;
+  z-index: 3;
+}
+
+.scroll-hint.visible { opacity: 0.45; }
+
+.scroll-hint span {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+}
+
+.scroll-mouse {
+  width: 18px;
+  height: 28px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  position: relative;
+}
+
+.scroll-mouse::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 6px;
+  background: var(--white);
+  border-radius: 2px;
+  animation: mouse-scroll 1.8s ease-in-out infinite;
+}
+
+@keyframes mouse-scroll {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+
+/* Progress bar — thin line at very top */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--gradient-gold);
+  width: 0%;
+  z-index: 9000;
+  transform-origin: left;
+  transition: width 0.05s linear;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   CONTENT SECTION BELOW (optional — shows after animation)
+============================================================ */
+.post-scroll {
+  background: var(--black);
+  padding: 160px 5%;
+  text-align: center;
+  position: relative;
+}
+
+.post-scroll::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+}
+
+.post-scroll h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.post-scroll p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--white-dim);
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 36px;
+  border-radius: 50px;
+  background: var(--gradient-gold);
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s;
+  box-shadow: 0 4px 28px rgba(201,168,76,0.28);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px 40px rgba(201,168,76,0.45);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 768px) {
+  .scroll-title { letter-spacing: -0.03em; }
+}
