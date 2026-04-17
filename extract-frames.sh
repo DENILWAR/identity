@@ -2,15 +2,37 @@
 # ============================================================
 # extract-frames.sh
 # Converts scroll.mp4 → optimized WebP frames for scroll animation
-# Usage: bash extract-frames.sh
+#
+# Usage:
+#   bash extract-frames.sh          → standard frames/ (1× displays)
+#   bash extract-frames.sh --hq     → frames-hq/ (Retina/2× displays)
+#
+# DPR routing (script-scroll.js handles automatically):
+#   DPR = 1   → loads frames/
+#   DPR > 1   → probes frames-hq/; falls back to frames/ if absent
 # ============================================================
 set -euo pipefail
 
 VIDEO="img/scroll.mp4"
-OUT_DIR="frames"
-TARGET_FRAMES=100      # How many frames to extract (80–120 range)
-WIDTH=1280             # Output width (height auto-calculated)
-QUALITY=82             # WebP quality 0–100 (82 = great balance)
+TARGET_FRAMES=100
+
+# ── Parse flags ────────────────────────────────────────────
+HQ=false
+for arg in "$@"; do
+  [[ "$arg" == "--hq" ]] && HQ=true
+done
+
+if $HQ; then
+  OUT_DIR="frames-hq"
+  QUALITY=92          # Higher quality for Retina compression
+  WIDTH=1280          # Source is 1280px — upscaling adds no real detail
+  MODE_LABEL="HQ (Retina, quality=92)"
+else
+  OUT_DIR="frames"
+  QUALITY=82          # Standard quality balances size/sharpness for 1× displays
+  WIDTH=1280
+  MODE_LABEL="Standard (1×, quality=82)"
+fi
 
 # ── Check dependencies ─────────────────────────────────────
 if ! command -v ffmpeg &>/dev/null; then
@@ -23,33 +45,46 @@ if [ ! -f "$VIDEO" ]; then
   exit 1
 fi
 
-# ── Get video duration ─────────────────────────────────────
+# ── Get video info ─────────────────────────────────────────
 DURATION=$(ffprobe -v error \
   -show_entries format=duration \
   -of default=noprint_wrappers=1:nokey=1 \
   "$VIDEO")
 
-echo "📹  Video: $VIDEO"
+NATIVE_W=$(ffprobe -v error -select_streams v:0 \
+  -show_entries stream=width \
+  -of default=noprint_wrappers=1:nokey=1 \
+  "$VIDEO")
+
+echo "📹  Video: $VIDEO  (native ${NATIVE_W}px wide)"
 echo "⏱   Duration: ${DURATION}s"
-echo "🎞   Extracting ${TARGET_FRAMES} frames at ${WIDTH}px wide..."
+echo "🎯  Mode: ${MODE_LABEL}"
+echo "🎞   Extracting ${TARGET_FRAMES} frames at ${WIDTH}px wide → ${OUT_DIR}/"
+echo ""
+
+# ── Warn if upscaling ──────────────────────────────────────
+if [ "$WIDTH" -gt "$NATIVE_W" ] 2>/dev/null; then
+  echo "⚠️   Width ${WIDTH}px > source ${NATIVE_W}px — upscaling adds no real detail."
+  echo "     Consider using source width. Continuing anyway…"
+  echo ""
+fi
 
 # ── Create output directory ────────────────────────────────
 mkdir -p "$OUT_DIR"
 
 # ── Calculate fps to hit the target frame count ───────────
-# fps = TARGET_FRAMES / DURATION
 FPS=$(echo "scale=6; $TARGET_FRAMES / $DURATION" | bc)
 echo "📊  Effective fps: $FPS"
 
 # ── Extract frames ─────────────────────────────────────────
-# -vf: scale to width (keep aspect), then crop to exact even dimensions
-# -compression_level 4: faster WebP encoding with good compression
+# -vf: scale to width (keep aspect ratio, even height for codec compat)
+# -compression_level 5: slightly higher compression for better size/quality
 # -q:v: WebP quality (maps to 0–100 via libwebp)
 ffmpeg -y \
   -i "$VIDEO" \
   -vf "fps=${FPS},scale=${WIDTH}:-2:flags=lanczos" \
   -c:v libwebp \
-  -compression_level 4 \
+  -compression_level 5 \
   -quality ${QUALITY} \
   -an \
   -vsync vfr \
@@ -71,7 +106,9 @@ if [ "$ACTUAL" -gt 0 ]; then
   echo "📐  Frame dimensions: ${DIMS}px"
   echo "💾  Total size: ${TOTAL_SIZE}"
   echo ""
-  echo "👉  Open scroll.html in your browser to preview!"
-  echo "   Tip: update CONFIG.frameCount = ${ACTUAL} in script-scroll.js"
-  echo "        to skip auto-detection and load faster."
+  echo "👉  Set CONFIG.frameCount = ${ACTUAL} in script-scroll.js"
+  if $HQ; then
+    echo "    HQ frames are served automatically on Retina (DPR > 1) if frames-hq/ exists."
+    echo "    Run 'bash extract-frames.sh' (no flag) to also generate standard frames/."
+  fi
 fi

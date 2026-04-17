@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacidad y Cookies — Sistemas Organizados at Network</title>
+  <style>
+    :root {
+      --black:      #000;
+      --white:      #fff;
+      --white-dim:  #a8a8a8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d9b0;
+      --gradient-gold: linear-gradient(135deg, #e8d9b0 0%, #c9a84c 35%, #f5edd5 55%, #8a6a1e 80%, #c9a84c 100%);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.75;
+    }
+    header {
+      padding: 32px 5%;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    header a {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    header a:hover { color: var(--gold-light); }
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 80px 5% 120px;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .last-updated {
+      font-size: 13px;
+      color: var(--white-dim);
+      margin-bottom: 64px;
+    }
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 52px 0 16px;
+    }
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      margin: 28px 0 10px;
+    }
+    p { color: rgba(255,255,255,0.78); margin-bottom: 16px; font-size: 0.97rem; }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { color: var(--gold-light); text-decoration: underline; }
+    ul, ol { color: rgba(255,255,255,0.78); padding-left: 20px; margin-bottom: 16px; font-size: 0.97rem; }
+    li { margin-bottom: 6px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 0.9rem;
+    }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.04);
+      color: var(--gold-light);
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.72);
+      vertical-align: top;
+    }
+    .placeholder {
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: var(--gold);
+      font-style: italic;
+      font-size: 0.9em;
+    }
+    .cookie-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge-necessary { background: rgba(80,180,120,0.18); color: #5cd49a; }
+    .badge-analytics  { background: rgba(201,168,76,0.18); color: var(--gold); }
+    .badge-marketing  { background: rgba(200,80,80,0.18);  color: #e07070; }
+    footer {
+      text-align: center;
+      padding: 40px 5%;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+    footer a { color: rgba(255,255,255,0.35); }
+    footer a:hover { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Volver a inicio</a>
+</header>
+
+<main>
+  <h1>Política de Privacidad y Cookies</h1>
+  <p class="last-updated">Última actualización: abril de 2026</p>
+
+  <!-- ── RESPONSABLE ── -->
+  <h2>I. Responsable del Tratamiento</h2>
+  <ul>
+    <li><strong>Nombre o razón social:</strong> <span class="placeholder">Denilson Arnau Capa Morocho</span></li>
+    <li><strong>NIF / DNI:</strong> <span class="placeholder">47929828J</span></li>
+    <li><strong>Domicilio:</strong> <span class="placeholder">Mare de Deu de Fátima, 31, 08191, Rubí, Barcelona, España</span></li>
+    <li><strong>Correo electrónico:</strong> <span class="placeholder">bussiness@denilsonarnau.com</span></li>
+    <li><strong>Nombre comercial:</strong> Sistemas Organizados at Network</li>
+    <li><strong>Sitio web:</strong> <span class="placeholder">identity.son.enterprises</span></li>
+  </ul>
+
+  <!-- ── DATOS QUE RECABAMOS ── -->
+  <h2>II. Datos Personales que Tratamos</h2>
+  <p>
+    Dependiendo de cómo interactúes con el sitio web, podemos tratar las siguientes categorías
+    de datos:
+  </p>
+  <ul>
+    <li><strong>Datos de contacto:</strong> nombre, dirección de correo electrónico y mensaje,
+    cuando rellenas el formulario de contacto.</li>
+    <li><strong>Datos de navegación:</strong> dirección IP, tipo de navegador, sistema operativo,
+    páginas visitadas y tiempo de permanencia, recabados automáticamente por el servidor web
+    y/o por herramientas analíticas.</li>
+    <li><strong>Cookies:</strong> identificadores anónimos o seudónimos almacenados en tu
+    dispositivo (ver Sección V).</li>
+  </ul>
+  <p>No tratamos categorías especiales de datos (salud, ideología, origen étnico, etc.).</p>
+
+  <!-- ── FINALIDAD Y BASE LEGAL ── -->
+  <h2>III. Finalidad y Base Legal del Tratamiento</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Finalidad</th>
+        <th>Base legal (RGPD art. 6)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Responder a consultas enviadas a través del formulario de contacto</td>
+        <td>Interés legítimo / Ejecución de contrato (art. 6.1.b y 6.1.f)</td>
+      </tr>
+      <tr>
+        <td>Envío de comunicaciones comerciales si lo solicitas expresamente</td>
+        <td>Consentimiento (art. 6.1.a)</td>
+      </tr>
+      <tr>
+        <td>Analítica web — mejorar la experiencia del sitio</td>
+        <td>Consentimiento (art. 6.1.a)</td>
+      </tr>
+      <tr>
+        <td>Cumplimiento de obligaciones legales</td>
+        <td>Obligación legal (art. 6.1.c)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── CONSERVACIÓN ── -->
+  <h2>IV. Plazo de Conservación</h2>
+  <p>Los datos se conservarán durante el tiempo estrictamente necesario para la finalidad para
+  la que fueron recabados y, en todo caso:</p>
+  <ul>
+    <li>Datos de contacto: máximo <strong>2 años</strong> desde el último contacto, salvo que
+    exista relación contractual activa.</li>
+    <li>Datos de analítica web anonimizados: hasta <strong>26 meses</strong> (límite recomendado
+    por la AEPD para Google Analytics).</li>
+    <li>Datos de cookies: según el plazo específico indicado en la tabla de cookies (Sección V).</li>
+    <li>Documentación contable y fiscal: <strong>6 años</strong> conforme al Código de Comercio.</li>
+  </ul>
+
+  <!-- ── COOKIES ── -->
+  <h2>V. Política de Cookies</h2>
+
+  <h3>¿Qué son las cookies?</h3>
+  <p>
+    Las cookies son pequeños ficheros de texto que se almacenan en tu dispositivo cuando visitas
+    un sitio web. Permiten que el sitio recuerde tus preferencias, analice el tráfico o muestre
+    publicidad personalizada.
+  </p>
+
+  <h3>Cookies que utilizamos</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Cookie</th>
+        <th>Tipo</th>
+        <th>Duración</th>
+        <th>Finalidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>cookie_consent</code></td>
+        <td><span class="cookie-badge badge-necessary">Necesaria</span></td>
+        <td>1 año</td>
+        <td>Almacena tu elección sobre el consentimiento de cookies</td>
+      </tr>
+      <tr>
+        <td><code>_ga</code>, <code>_gid</code></td>
+        <td><span class="cookie-badge badge-analytics">Analítica</span></td>
+        <td>2 años / 24h</td>
+        <td>Google Analytics — estadísticas de tráfico anonimizadas</td>
+      </tr>
+      <tr>
+        <td><span class="placeholder">[otras cookies si aplican]</span></td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    <span class="cookie-badge badge-necessary">Necesarias</span> — No requieren consentimiento
+    (art. 22.2 LSSI-CE). Las demás solo se activan con tu consentimiento previo.
+  </p>
+
+  <h3>Cómo gestionar o eliminar cookies</h3>
+  <p>Puedes retirar tu consentimiento y eliminar las cookies en cualquier momento desde la
+  configuración de tu navegador:</p>
+  <ul>
+    <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+    <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+    <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Apple Safari</a></li>
+    <li><a href="https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener">Microsoft Edge</a></li>
+  </ul>
+  <p>La desactivación de cookies puede afectar a la funcionalidad del sitio web.</p>
+
+  <!-- ── DERECHOS ── -->
+  <h2>VI. Tus Derechos</h2>
+  <p>
+    De conformidad con el RGPD y la LOPDGDD 3/2018, puedes ejercer en cualquier momento los
+    siguientes derechos:
+  </p>
+  <ul>
+    <li><strong>Acceso</strong> — conocer qué datos tratamos sobre ti.</li>
+    <li><strong>Rectificación</strong> — corregir datos inexactos o incompletos.</li>
+    <li><strong>Supresión ("derecho al olvido")</strong> — solicitar la eliminación de tus datos.</li>
+    <li><strong>Limitación del tratamiento</strong> — solicitar que suspendamos el tratamiento.</li>
+    <li><strong>Portabilidad</strong> — recibir tus datos en formato estructurado y legible.</li>
+    <li><strong>Oposición</strong> — oponerte al tratamiento basado en interés legítimo.</li>
+    <li><strong>Retirada del consentimiento</strong> — sin que ello afecte a la licitud del
+    tratamiento previo.</li>
+  </ul>
+  <p>
+    Para ejercer estos derechos, envía un escrito con copia de tu DNI/NIE a:
+    <a href="mailto:"><span class="placeholder">[EMAIL DE CONTACTO]</span></a>.
+  </p>
+  <p>
+    Si consideras que el tratamiento de tus datos vulnera la normativa, puedes presentar
+    reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong>:
+    <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.
+  </p>
+
+  <!-- ── TRANSFERENCIAS INTERNACIONALES ── -->
+  <h2>VII. Transferencias Internacionales</h2>
+  <p>
+    El uso de Google Analytics implica una transferencia de datos a Google LLC (EE. UU.).
+    Esta transferencia se encuentra amparada por las Cláusulas Contractuales Tipo aprobadas
+    por la Comisión Europea y por el Marco de Privacidad de Datos UE–EE. UU.
+  </p>
+  <p>
+    No realizamos otras transferencias internacionales de datos personales fuera del Espacio
+    Económico Europeo (EEE).
+  </p>
+
+  <!-- ── MENORES ── -->
+  <h2>VIII. Menores de Edad</h2>
+  <p>
+    Este sitio web no está dirigido a menores de 14 años. No recabamos conscientemente datos
+    personales de menores de esa edad. Si eres padre/madre o tutor y crees que tu hijo/a nos
+    ha facilitado datos personales, contáctanos para su eliminación.
+  </p>
+
+  <!-- ── CAMBIOS ── -->
+  <h2>IX. Cambios en Esta Política</h2>
+  <p>
+    Podemos actualizar esta política periódicamente. La fecha de "Última actualización"
+    al inicio del documento refleja la versión vigente. Te recomendamos consultarla
+    regularmente. Los cambios sustanciales se comunicarán de forma destacada en el sitio web.
+  </p>
+
+</main>
+
+<footer>
+  <p>© 2026 Sistemas Organizados at Network — Todos los derechos reservados &nbsp;·&nbsp;
+    <a href="aviso-legal.html">Aviso Legal</a> &nbsp;·&nbsp;
+    <a href="privacidad.html">Privacidad y Cookies</a>
+  </p>
+</footer>
+
+</body>
+</html>
