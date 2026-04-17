@@ -2827,6 +2827,8 @@
     <a href="aviso-legal.html">Aviso Legal</a>
     <span aria-hidden="true">·</span>
     <a href="privacidad.html">Privacidad y Cookies</a>
+    <span aria-hidden="true">·</span>
+    <a href="terminos.html">Términos de Compra</a>
   </p>
 </footer>
 
@@ -3011,6 +3013,127 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="script-scroll.js"></script>
+
+<!-- ============================================================
+     COOKIE CONSENT BANNER
+============================================================ -->
+<div id="cookie-banner" role="dialog" aria-label="Aviso de cookies" aria-live="polite" style="display:none">
+  <p>
+    Usamos cookies analíticas para mejorar el sitio.
+    <a href="privacidad.html">Más información</a>
+  </p>
+  <div class="cookie-banner-actions">
+    <button id="cookie-reject" type="button">Rechazar</button>
+    <button id="cookie-accept" type="button">Aceptar</button>
+  </div>
+</div>
+
+<style>
+  #cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    background: #111;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 14px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  #cookie-banner p { margin: 0; line-height: 1.5; }
+  #cookie-banner a {
+    color: #c9a84c;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  #cookie-banner a:hover { text-decoration: underline; }
+  .cookie-banner-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  #cookie-reject, #cookie-accept {
+    padding: 7px 18px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  #cookie-reject {
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+  }
+  #cookie-reject:hover {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.75);
+    border-color: rgba(255,255,255,0.25);
+  }
+  #cookie-accept {
+    background: linear-gradient(135deg, #e8d9b0 0%, #c9a84c 35%, #f5edd5 55%, #8a6a1e 80%, #c9a84c 100%);
+    color: #000;
+    border-color: transparent;
+  }
+  #cookie-accept:hover { opacity: 0.88; }
+  @media (max-width: 480px) {
+    #cookie-banner { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 5%; }
+    .cookie-banner-actions { width: 100%; }
+    #cookie-reject, #cookie-accept { flex: 1; text-align: center; }
+  }
+</style>
+
+<script>
+  (function () {
+    var GA_ID = 'G-XXXXXXXXXX'; // ← reemplaza con tu Measurement ID real
+
+    function loadAnalytics() {
+      if (window._gaLoaded) return;
+      window._gaLoaded = true;
+      var s = document.createElement('script');
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      s.async = true;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA_ID, { anonymize_ip: true });
+    }
+
+    var banner  = document.getElementById('cookie-banner');
+    var btnOk   = document.getElementById('cookie-accept');
+    var btnNo   = document.getElementById('cookie-reject');
+    var stored  = localStorage.getItem('cookie_consent');
+
+    if (stored === 'accepted') {
+      loadAnalytics();
+    } else if (!stored) {
+      banner.style.display = 'flex';
+    }
+
+    btnOk.addEventListener('click', function () {
+      localStorage.setItem('cookie_consent', 'accepted');
+      banner.style.display = 'none';
+      loadAnalytics();
+    });
+
+    btnNo.addEventListener('click', function () {
+      localStorage.setItem('cookie_consent', 'rejected');
+      banner.style.display = 'none';
+    });
+  })();
+</script>
 
 </body>
 </html>
